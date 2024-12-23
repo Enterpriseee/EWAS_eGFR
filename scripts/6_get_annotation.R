@@ -1,26 +1,21 @@
+#Data preparation
 range_result_name <- 'rrbs_clean_data/result_range.RDS'
-
-# if (!requireNamespace("BiocManager", quietly = TRUE))
-#   install.packages("BiocManager")
-# BiocManager::install("biomaRt")
-
-
 result <- readRDS(range_result_name)
 result$seqnames <- gsub('chr', '', result$seqnames)
 result$seqnames <- as.numeric(result$seqnames)
 result <- result[!is.na(result$seqnames), ]
 
-
+#Get gene annotation information from Ensembl
 library(biomaRt)
 ensembl <- useMart("ensembl", dataset = "hsapiens_gene_ensembl", host="grch37.ensembl.org")
 # attr: entrezgene, ensembl_gene_id
 attr <- listAttributes(ensembl)
 filter <- listFilters(ensembl)
 
-
 id_type <- 'entrezgene_id'
 anno <- getBM(attributes = c(id_type, 'chromosome_name', 'start_position', 'end_position'), mart = ensembl)
 
+#Gene annotation was combined with significance results
 library(plyr)
 result_anno <- adply(.data = result, .margins = 1, .fun = function(x) {
   anno[(x$seqnames == anno$chromosome_name) & (x$start >= anno$start_position) & (x$end <= anno$end_position), ]
@@ -31,12 +26,8 @@ saveRDS(result_anno, result_anno_filename)
 result_anno_csv <- gsub('.RDS', paste0('_', id_type, '.csv'), range_result_name)
 write.csv(result_anno, file = result_anno_csv, row.names = FALSE)
 
-
-
-
 id_type <- 'ensembl_gene_id'
 anno <- getBM(attributes = c(id_type, 'chromosome_name', 'start_position', 'end_position', 'description', 'hgnc_symbol'), mart = ensembl)
-
 
 library(plyr)
 result_anno <- adply(.data = result, .margins = 1, .fun = function(x) {
@@ -72,7 +63,7 @@ saveRDS(result_anno, result_anno_filename)
 result_anno_csv <- gsub('.RDS', paste0('_', id_type, '.csv'), range_result_name)
 write.csv(result_anno, file = result_anno_csv, row.names = FALSE)
 
-
+#Sorting and output results 
 sigresult <- readRDS('rrbs_clean_data/sigresult.RDS')
 anno <- readRDS('rrbs_clean_data/result_range_ensembl_gene_id.RDS')
 colnames(sigresult) <- c('unit', 'Chromosome', 'Position', 'pvalue', 'effectsize', 'padj')
