@@ -1,0 +1,12 @@
+
+Call:  glm(formula = corc ~ MRS + age + gender + UA + GLU + TG + CHOL + 
+    HDLC, family = binomial, data = data)
+
+Coefficients:
+(Intercept)          MRS          age       gender           UA          GLU           TG         CHOL         HDLC  
+  -5.620416     0.785364     0.003100     0.071621     0.004884    -0.375762     0.580756     0.235757     2.154474  
+
+Degrees of Freedom: 217 Total (i.e. Null);  209 Residual
+  (因为不存在，4个观察量被删除了)
+Null Deviance:	    276.6 
+Residual Deviance: 197.1 	AIC: 215.1
