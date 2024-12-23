@@ -1,0 +1,25 @@
+
+Call:
+geeglm(formula = eGFR ~ age + gender + ENSG00000171735, data = sample, 
+    id = fid, corstr = "exchangeable")
+
+ Coefficients:
+                Estimate Std.err  Wald Pr(>|W|)    
+(Intercept)      114.308  17.363 43.34  4.6e-11 ***
+age               -0.248   0.344  0.52     0.47    
+gender2          -30.012   5.610 28.61  8.8e-08 ***
+ENSG00000171735    9.402   1.276 54.26  1.8e-13 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation structure = exchangeable 
+Estimated Scale Parameters:
+
+            Estimate Std.err
+(Intercept)       72    29.4
+  Link = identity 
+
+Estimated Correlation Parameters:
+      Estimate Std.err
+alpha    0.652   0.109
+Number of clusters:   11  Maximum cluster size: 2 
